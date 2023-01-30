@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xffece8e5),
+        backgroundColor: Color(0xfffe8eaf9),
         body: SafeArea(
             child: Column(
           children: [
@@ -55,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: Color(0xff7a928c)),
+                          color: Color(0xff283593),),
                       child: IconButton(
                           onPressed: () {
                             Navigator.of(context).push(MaterialPageRoute(
@@ -87,12 +87,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              var dt =
-                                  snapshot.data![index]["taskdate"].toString();
+                              var dt =snapshot.data![index]["taskdate"].toString();
                               print(dt);
                               var inputFormat = DateFormat('yyyy-MM-dd');
                               var inputDate = inputFormat.parse(dt);
                               var outputFormat = DateFormat('dd-MM-yyyy');
+
                               var outputDate = outputFormat.format(inputDate);
                               //             //convert
                               return Container(
@@ -136,11 +136,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               ElevatedButton(
                                                 onPressed: () {
+
                                                   Navigator.of(context).push(MaterialPageRoute(
-                                                      builder: (contect) => Updatenotes()));
+                                                      builder: (contect) => Updatenotes(
+                                                        uid:snapshot.data![index]["pid"].toString()  ,
+                                                      )));
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xff7a928c),
+                                                  primary: Color(0xff283593),
                                                 ),
                                                 child: Text("Edit"),
                                               ),
@@ -153,10 +156,36 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   DatabaseHelper obj =new DatabaseHelper();
                                                   var status = await obj.deleteNotes(id);
                                                   if (status==1){
-                                                    print("Notes delected");
-                                                    setState(() {
-                                                      allnotes = getdata();
-                                                    });
+                                                    AlertDialog alert = AlertDialog(
+                                                      title: Text("Are You Sure"),
+                                                      content: Text("You want to delete this note because after this you don't get it."),
+                                                      actions: [
+                                                        Row(
+                                                          children: [
+                                                            ElevatedButton(onPressed: (){
+                                                              print("Notes delected");
+                                                              setState(() {
+                                                                allnotes = getdata();
+                                                              });
+                                                              Navigator.of(context).pop();
+                                                            }, child: Text("Delect")),
+                                                            SizedBox(width: 20.0,),
+                                                            ElevatedButton(onPressed: (){
+                                                              Navigator.of(context).pop();
+                                                            }, child: Text("No"))
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    );
+
+                                                    // show the dialog
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext context) {
+                                                        return alert;
+                                                      },
+                                                    );
+
                                                   }
                                                   else{
                                                     print("Please try again");
@@ -164,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                                                 },
                                                 style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xff7a928c),
+                                                  primary:Color(0xff283593),
                                                 ),
                                                 child: Text("Delect"),
                                               ),

@@ -45,4 +45,15 @@ class DatabaseHelper{
     return status;
 
   }
+
+  Future<List> get_notes(id)async{
+    var db = await creat_database();
+    var data=await db.rawQuery("select * from notes where pid=?",[id]);
+    return data;
+  }
+
+  updateproduct(title,description,date,id)async{
+    var db = await creat_database();
+    var data= await db.rawUpdate("update notes set title=?,description=?,taskdate=? where pid=?",[title,description,date,id]);
+  }
 }

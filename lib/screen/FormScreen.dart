@@ -27,27 +27,37 @@ class _FormScreenState extends State<FormScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 25.0,),
+              SizedBox(height: 35.0,),
               Image.asset("img/large_notebyte1.png"),
               SizedBox(height: 30.0,),
               Container(
-                padding: EdgeInsets.only(top: 20.0,left:40.0,right: 40.0),
+                padding: EdgeInsets.only(top: 20.0,left:10.0,right: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(50)),
+                ),
                 child: Card(
                   child: Container(
-                    padding: EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          SizedBox(height: 20.0,),
+                          SizedBox(height: 10.0,),
                           Center(
                             child: Text("This is for adding new activity",style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold
+                              fontSize: 25.0,
+                              fontFamily: "oswald",
+                              fontWeight: FontWeight.bold,
                             ),),
                           ),
-                          SizedBox(height: 25.0,),
+                          SizedBox(height: 35.0,),
+                          Text("Title",style: TextStyle(
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.bold
+                          ),),
+                          SizedBox(height: 10.0,),
                           TextField(
                             decoration: InputDecoration(
                               filled: true,
@@ -67,6 +77,11 @@ class _FormScreenState extends State<FormScreen> {
                             maxLines: 1,
                           ),
                           SizedBox(height: 25.0,),
+                          Text("Description",style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold
+                          ),),
+                          SizedBox(height: 10.0,),
                           TextField(
                             decoration: InputDecoration(
                               filled: true,
@@ -86,10 +101,16 @@ class _FormScreenState extends State<FormScreen> {
                             maxLines: 1,
                           ),
                           SizedBox(height: 25.0,),
+                          Text("Date",style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold
+                          ),),
+                          SizedBox(height: 10.0,),
                           TextField(
                             controller: dateInput,
                             //editing controller of this TextField
                             decoration: InputDecoration(
+                              filled: true,
                               prefixIcon: Icon(Icons.calendar_today),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(color: Color(0xff283593),),
@@ -144,69 +165,72 @@ class _FormScreenState extends State<FormScreen> {
 
                           SizedBox(height: 25.0,),
                           Center(
-                            child: ElevatedButton(onPressed: ()async{
-                              var title=_title.text.toString();
-                              var description=_description.text.toString();
-                              var date=dateInput.text.toString();
-                              DatabaseHelper obj =new DatabaseHelper();
-                              var id = await obj.insertProduct(title,description,date);
-                             if(_title==null || _description==null || dateInput==null)
-                             {
-                               final snackBar = SnackBar(
+                            child: SizedBox(
+                              width: 125.0,
+                              child: ElevatedButton(onPressed: ()async{
+                                var title=_title.text.toString();
+                                var description=_description.text.toString();
+                                var date=dateInput.text.toString();
+                                DatabaseHelper obj =new DatabaseHelper();
+                                var id = await obj.insertProduct(title,description,date);
+                               if(_title==null || _description==null || dateInput==null)
+                               {
+                                 final snackBar = SnackBar(
 
-                                 /// need to set following properties for best effect of awesome_snackbar_content
-                                 elevation: 0,
-                                 behavior: SnackBarBehavior.floating,
-                                 backgroundColor: Colors.transparent,
-                                 content: AwesomeSnackbarContent(
-                                   title: 'Error!',
-                                   message:
-                                   'This is a message that data will be added in the databasw!',
+                                   /// need to set following properties for best effect of awesome_snackbar_content
+                                   elevation: 0,
+                                   behavior: SnackBarBehavior.floating,
+                                   backgroundColor: Colors.transparent,
+                                   content: AwesomeSnackbarContent(
+                                     title: 'Error!',
+                                     message:
+                                     'This is a message that data will be added in the databasw!',
 
-                                   /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                   contentType: ContentType.failure,
-                                 ),
+                                     /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                     contentType: ContentType.failure,
+                                   ),
+                                 );
+
+                                 ScaffoldMessenger.of(context)
+                                   ..hideCurrentSnackBar()
+                                   ..showSnackBar(snackBar);
+                                }
+                               else{
+                                 final snackBar = SnackBar(
+
+                                   /// need to set following properties for best effect of awesome_snackbar_content
+                                   elevation: 0,
+                                   behavior: SnackBarBehavior.floating,
+                                   backgroundColor: Colors.transparent,
+                                   content: AwesomeSnackbarContent(
+                                     title: 'Added Successfully!',
+                                     message:
+                                     'This is a message that data are incomeplete so Please complete the data!',
+
+                                     /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
+                                     contentType: ContentType.success,
+                                   ),
+                                 );
+
+                                 ScaffoldMessenger.of(context)
+                                   ..hideCurrentSnackBar()
+                                   ..showSnackBar(snackBar);
+
+                               }
+                               Navigator.of(context).push(
+                                 MaterialPageRoute(builder: (context)=>HomeScreen())
                                );
-
-                               ScaffoldMessenger.of(context)
-                                 ..hideCurrentSnackBar()
-                                 ..showSnackBar(snackBar);
-                              }
-                             else{
-                               final snackBar = SnackBar(
-
-                                 /// need to set following properties for best effect of awesome_snackbar_content
-                                 elevation: 0,
-                                 behavior: SnackBarBehavior.floating,
-                                 backgroundColor: Colors.transparent,
-                                 content: AwesomeSnackbarContent(
-                                   title: 'Added Successfully!',
-                                   message:
-                                   'This is a message that data are incomeplete so Please complete the data!',
-
-                                   /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-                                   contentType: ContentType.success,
-                                 ),
-                               );
-
-                               ScaffoldMessenger.of(context)
-                                 ..hideCurrentSnackBar()
-                                 ..showSnackBar(snackBar);
-
-                             }
-                             Navigator.of(context).push(
-                               MaterialPageRoute(builder: (context)=>HomeScreen())
-                             );
-                              },
-                              child: Text("Add",style: TextStyle(
-                                fontSize: 20.0,
-                              ),),
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xff283593),
-                                  padding: const EdgeInsets.fromLTRB(25, 13, 25, 13),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  )
+                                },
+                                child: Text("Add",style: TextStyle(
+                                  fontSize: 20.0,
+                                ),),
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xff283593),
+                                    padding: const EdgeInsets.fromLTRB(25, 13, 25, 13),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    )
+                                ),
                               ),
                             ),
                           ),
