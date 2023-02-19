@@ -127,7 +127,7 @@ class _FormScreenState extends State<FormScreen> {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(1950),
+                                  firstDate: DateTime.now(),
                                   //DateTime.now() - not to allow to choose before today.
                                   lastDate: DateTime(2100),
                                   builder: (context, child) {
